@@ -1,0 +1,34 @@
+# Use the official Node.js image as the base image for frontend
+FROM node:20.0.0-alpine AS backend
+
+# Set the working directory for frontend
+WORKDIR /app/quirknotes/backend
+
+# Copy frontend package files
+COPY quirknotes/backend/package*.json ./
+
+# Install frontend dependencies
+RUN npm install
+
+# Copy frontend source code
+COPY quirknotes/backend ./
+
+EXPOSE 4000
+
+# Build frontend
+CMD ["npm", "run", "dev"]
+
+# # Use a lightweight webserver to serve frontend assets
+# FROM nginx:alpine AS webserver
+
+# # Set the working directory for frontend
+# WORKDIR /usr/share/nginx/js
+
+# # Copy frontend build from frontend stage to nginx directory
+# COPY --from=backend /app/quirknotes/backend/build ./
+
+# # Expose port 3000 to serve the frontend
+# EXPOSE 4000
+
+# # Command to start nginx and serve frontend
+# CMD ["nginx", "-g", "daemon off;"]
